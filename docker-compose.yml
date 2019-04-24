@@ -32,7 +32,7 @@ services:
     depends_on:
       - pgdb
     ports:
-      - "${BACKEND_PORT}:3000"
+      - "${BACKEND_PORT}:8000"
     env_file:
       - ${BACKEND_BUILD_PATH}/.env
     volumes:
