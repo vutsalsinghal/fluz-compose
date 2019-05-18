@@ -90,19 +90,25 @@ class AddCalorieIntake extends Component {
     }
 
     return (
-      <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-        {msg}
-        <Form.Group>
-          <Form.Field width={12}>
-            <label>Add Calorie</label>
-            <Input value={this.state.calorie} onChange={event => this.setState({ calorie: event.target.value })} />
-          </Form.Field>
-          <Button type='submit' size='small' floated='right' primary basic loading={this.state.loadingData} disabled={this.state.loadingData}>
-            ADD
+      <div>
+        <br />
+        <h1>Add Calorie Intake</h1>
+        <br /><br />
+        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+          {msg}
+          <Form.Group>
+            <Form.Field width={12}>
+              <label>Add Calorie</label>
+              <Input value={this.state.calorie} onChange={event => this.setState({ calorie: event.target.value })} />
+            </Form.Field>
+            <Button type='submit' size='small' floated='right' primary basic loading={this.state.loadingData} disabled={this.state.loadingData}>
+              ADD
           </Button>
-        </Form.Group>
-        <Message error header="Oops!" content={this.state.errorMessage} />
-      </Form>
+          </Form.Group>
+          <Message error header="Oops!" content={this.state.errorMessage} />
+        </Form>
+        <br /><br />
+      </div>
     );
   }
 }
