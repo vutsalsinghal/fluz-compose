@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Button, Dimmer, Form, Input, Message, Loader } from "semantic-ui-react";
 import { print } from 'graphql';
 import gql from 'graphql-tag';
-import { Mutation } from "react-apollo";
-
 import axios from 'axios';
 
 const LOGIN_QUERY = gql`
@@ -20,8 +18,6 @@ class Login extends Component {
     errorMessage: '',
     username: '',
     password: '',
-    setError: false,
-    setData: false,
   }
 
   async componentDidMount() {
@@ -31,7 +27,17 @@ class Login extends Component {
   }
 
   onSubmit = async event => {
-
+    const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
+      query: print(LOGIN_QUERY),
+      variables: { username: this.state.username, password: this.state.password }
+    })
+    if (res.data.errors) {
+      this.setState({ errorMessage: res.data.errors[0].message });
+    }
+    if (res.data.data.login) {
+      localStorage.setItem('token', res.data.data.login.token);
+      this.setState({ msg: 'Loggedin Successfully!' });
+    }
   }
 
   render() {
@@ -43,39 +49,29 @@ class Login extends Component {
       );
     }
 
-    const { username, password } = this.state;
+    let msg = null;
+    if (this.state.msg) {
+      msg = <Message positive header={this.state.msg} />
+    }
 
     return (
-      <Mutation mutation={LOGIN_QUERY} variables={{ username, password }}>
-        {(login, { data, loading, error }) => {
-          if (error && !this.state.setError) {
-            this.setState({ errorMessage: error.message, setError: true });
-          }
-
-          if (data && !this.state.setData) {
-            this.setState({ msg: data.login, setData: true });
-          }
-
-          return (
-            <Form onSubmit={this.onSubmit} error={!!error}>
-              <Form.Field width={12}>
-                <label>Username</label>
-                <Input value={this.state.username} onChange={event => this.setState({ username: event.target.value })} />
-              </Form.Field>
-              <Form.Group>
-                <Form.Field width={12}>
-                  <label>Password</label>
-                  <Input value={this.state.password} onChange={event => this.setState({ password: event.target.value })} />
-                </Form.Field>
-                <Button onClick={login} size='small' floated='right' primary basic loading={loading} disabled={loading}>
-                  Login
-              </Button>
-              </Form.Group>
-              <Message error header="Oops!" content={this.state.errorMessage} />
-              {data && <Message positive header={this.state.msg} />}
-            </Form>)
-        }}
-      </Mutation>
+      <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+        <Form.Field width={12}>
+          <label>Username</label>
+          <Input value={this.state.username} onChange={event => this.setState({ username: event.target.value })} />
+        </Form.Field>
+        <Form.Group>
+          <Form.Field width={12}>
+            <label>Password</label>
+            <Input value={this.state.password} onChange={event => this.setState({ password: event.target.value })} />
+          </Form.Field>
+          <Button type='submit' size='small' floated='right' primary basic loading={this.state.loadingData} disabled={this.state.loadingData}>
+            Login
+          </Button>
+        </Form.Group>
+        <Message error header="Oops!" content={this.state.errorMessage} />
+        {msg}
+      </Form>
     );
   }
 }

@@ -27,7 +27,6 @@ class Home extends Component {
         <br />
         <h1 style={{ "textAlign": "center" }}>Welcome!</h1>
         <br /><br />
-        Hi There!
         <br /><br />
       </div>
     );

@@ -1,47 +1,42 @@
 import React, { Component } from "react";
-import { Button, Dimmer, Form, Input, Message, Loader } from "semantic-ui-react";
+import { Button, Dimmer, Form, Input, Message, Menu, Loader } from "semantic-ui-react";
 import { print } from 'graphql';
 import gql from 'graphql-tag';
 import axios from 'axios';
 
-const GET_CALORIE = gql`
+const GET_FRIENDS = gql`
 query {
-	getCalorieIntake{
-  	id,
-    user_id,
-    amount
+	getFriends{
+    username
   }
 }`;
 
-const ADD_CALORIE = gql`
-mutation addCalorieIntake($amount: Int!){
-  addCalorieIntake(amount: $amount){
-    id,
-    user_id,
-    amount
+const ADD_FRIEND = gql`
+mutation addFriend($username: String!){
+  addFriend(username:$username){
+    username
   }
 }`;
 
-class AddCalorieIntake extends Component {
+class Friends extends Component {
   state = {
     msg: '',
     loadingData: false,
     errorMessage: '',
-    calorie: '',
+    friends: [],
+    username: '',
     token: ''
   }
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz";
+    document.title = "Fluz | Friends";
 
-    //localStorage.setItem('token', '');
     const token = localStorage.getItem('token');
-    console.log('token in react: ', token);
     if (token) {
       const res = await axios.post(
         `http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
-          query: print(GET_CALORIE),
+          query: print(GET_FRIENDS),
         }, {
           headers: { 'x-token': token }
         })
@@ -49,8 +44,8 @@ class AddCalorieIntake extends Component {
       if (res.data.errors) {
         this.setState({ errorMessage: res.data.errors[0].message });
       }
-      if (res.data.data.getCalorieIntake) {
-        this.setState({ msg: 'Current Calorie intake: ' + res.data.data.getCalorieIntake.amount });
+      if (res.data.data.getFriends) {
+        this.setState({ friends: res.data.data.getFriends });
       }
     } else {
       this.setState({ errorMessage: 'Not Logged in!' });
@@ -61,18 +56,36 @@ class AddCalorieIntake extends Component {
 
   onSubmit = async (event) => {
     const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
-      query: print(ADD_CALORIE),
-      variables: { amount: parseInt(this.state.calorie, 10) },
+      query: print(ADD_FRIEND),
+      variables: { username: this.state.username },
     }, {
         headers: { 'x-token': this.state.token }
       })
 
+    console.log(res.data);
     if (res.data.errors) {
       this.setState({ errorMessage: res.data.errors[0].message });
     }
-    if (res.data.data.addCalorieIntake) {
-      this.setState({ msg: 'Current Calorie intake: ' + res.data.data.addCalorieIntake.amount });
+    if (res.data.data.addFriend) {
+      this.setState({ msg: 'Friend added successfully!', errorMessage: '' });
     }
+  }
+
+  renderFriends = () => {
+    let items = this.state.friends.map((frnd, id) => {
+      return (
+        <Menu.Item
+          key={id}
+          name={frnd.username}
+        >
+        </Menu.Item>
+      );
+    });
+
+    return <Menu vertical style={{
+      maxHeight: '10em',
+      overflowY: 'scroll',
+    }}>{items}</Menu>;
   }
 
   render() {
@@ -92,20 +105,22 @@ class AddCalorieIntake extends Component {
     return (
       <div>
         <br />
-        <h1>Add Calorie Intake</h1>
+        <h1>Friend List</h1>
+        {this.state.friends && this.renderFriends()}
+
         <br /><br />
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-          {msg}
           <Form.Group>
             <Form.Field width={12}>
-              <label>Add Calorie</label>
-              <Input value={this.state.calorie} onChange={event => this.setState({ calorie: event.target.value })} />
+              <label>Add Friend</label>
+              <Input value={this.state.username} onChange={event => this.setState({ username: event.target.value })} />
             </Form.Field>
             <Button type='submit' size='small' floated='right' primary basic loading={this.state.loadingData} disabled={this.state.loadingData}>
               ADD
           </Button>
           </Form.Group>
           <Message error header="Oops!" content={this.state.errorMessage} />
+          {msg}
         </Form>
         <br /><br />
       </div>
@@ -113,4 +128,4 @@ class AddCalorieIntake extends Component {
   }
 }
 
-export default AddCalorieIntake;
+export default Friends;

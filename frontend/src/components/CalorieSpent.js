@@ -22,7 +22,16 @@ mutation addCalorieSpent($amount: Int!){
   }
 }`;
 
-class AddCalorieSpent extends Component {
+const SUB_CALORIE_SPENT = gql`
+mutation subCalorieSpent($amount: Int!){
+  subCalorieSpent(amount: $amount){
+    id,
+    user_id,
+    amount
+  }
+}`;
+
+class CalorieSpent extends Component {
   state = {
     msg: '',
     loadingData: false,
@@ -45,8 +54,6 @@ class AddCalorieSpent extends Component {
           headers: { 'x-token': token }
         })
 
-      console.log(res.data);
-
       if (res.data.errors) {
         this.setState({ errorMessage: res.data.errors[0].message });
       }
@@ -60,7 +67,7 @@ class AddCalorieSpent extends Component {
     this.setState({ loadingData: false, token });
   }
 
-  onSubmit = async (event) => {
+  onAddSubmit = async () => {
     const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
       query: print(ADD_CALORIE_SPENT),
       variables: { amount: parseInt(this.state.calorie, 10) },
@@ -72,7 +79,23 @@ class AddCalorieSpent extends Component {
       this.setState({ errorMessage: res.data.errors[0].message });
     }
     if (res.data.data.addCalorieSpent) {
-      this.setState({ msg: 'Current Calorie intake: ' + res.data.data.addCalorieSpent.amount });
+      this.setState({ msg: 'Current Calorie intake: ' + res.data.data.addCalorieSpent.amount, errorMessage: '' });
+    }
+  }
+
+  onSubSubmit = async () => {
+    const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
+      query: print(SUB_CALORIE_SPENT),
+      variables: { amount: parseInt(this.state.calorie, 10) },
+    }, {
+        headers: { 'x-token': this.state.token }
+      })
+
+    if (res.data.errors) {
+      this.setState({ errorMessage: res.data.errors[0].message });
+    }
+    if (res.data.data.subCalorieSpent) {
+      this.setState({ msg: 'Current Calorie intake: ' + res.data.data.subCalorieSpent.amount, errorMessage: '' });
     }
   }
 
@@ -91,21 +114,42 @@ class AddCalorieSpent extends Component {
     }
 
     return (
-      <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-        {msg}
-        <Form.Group>
-          <Form.Field width={12}>
-            <label>Add Calorie</label>
-            <Input value={this.state.calorie} onChange={event => this.setState({ calorie: event.target.value })} />
-          </Form.Field>
-          <Button type='submit' size='small' floated='right' primary basic loading={this.state.loadingData} disabled={this.state.loadingData}>
-            ADD
-          </Button>
-        </Form.Group>
-        <Message error header="Oops!" content={this.state.errorMessage} />
-      </Form>
+      <div>
+        <br />
+        <h1>Update Calorie Spent</h1>
+        <br /><br />
+        <Form error={!!this.state.errorMessage}>
+          {msg}
+          <Form.Group>
+            <Form.Field width={12}>
+              <label>Update Calorie Spent</label>
+              <Input value={this.state.calorie} onChange={event => this.setState({ calorie: event.target.value })} />
+            </Form.Field>
+            <Button type='submit'
+              size='small'
+              floated='right'
+              primary basic
+              loading={this.state.loadingData}
+              disabled={this.state.loadingData}
+              onClick={this.onAddSubmit}>
+              ADD
+            </Button>
+            <Button type='submit'
+              size='small'
+              floated='right'
+              primary basic
+              loading={this.state.loadingData}
+              disabled={this.state.loadingData}
+              onClick={this.onSubSubmit}>
+              SUB
+            </Button>
+          </Form.Group>
+          <Message error header="Oops!" content={this.state.errorMessage} />
+        </Form>
+        <br /><br />
+      </div>
     );
   }
 }
 
-export default AddCalorieSpent;
+export default CalorieSpent;
