@@ -19,7 +19,7 @@ class Logout extends Component {
 
     if (token) {
       localStorage.setItem('token', '');
-      this.setState({ msg: 'Loggedout Successfully!' });
+      this.setState({ msg: 'Loggedout Successfully!', errorMessage: '' });
     } else {
       this.setState({ errorMessage: 'Not Logged in!' });
     }

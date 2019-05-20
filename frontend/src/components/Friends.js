@@ -62,7 +62,6 @@ class Friends extends Component {
         headers: { 'x-token': this.state.token }
       })
 
-    console.log(res.data);
     if (res.data.errors) {
       this.setState({ errorMessage: res.data.errors[0].message });
     }

@@ -65,7 +65,8 @@ class AddCalorieIntake extends Component {
     this.setState({ loadingData: false, token });
   }
 
-  onAddSubmit = async (event) => {
+  onAddSubmit = async () => {
+    this.setState({ loadingData: true });
     const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
       query: print(ADD_CALORIE),
       variables: { amount: parseInt(this.state.calorie, 10) },
@@ -79,9 +80,11 @@ class AddCalorieIntake extends Component {
     if (res.data.data.addCalorieIntake) {
       this.setState({ msg: 'Current Calorie intake: ' + res.data.data.addCalorieIntake.amount, errorMessage: '' });
     }
+    this.setState({ loadingData: false });
   }
 
-  onSubSubmit = async (event) => {
+  onSubSubmit = async () => {
+    this.setState({ loadingData: true });
     const res = await axios.post(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/graphql`, {
       query: print(SUB_CALORIE),
       variables: { amount: parseInt(this.state.calorie, 10) },
@@ -95,6 +98,7 @@ class AddCalorieIntake extends Component {
     if (res.data.data.subCalorieIntake) {
       this.setState({ msg: 'Current Calorie intake: ' + res.data.data.subCalorieIntake.amount, errorMessage: '' });
     }
+    this.setState({ loadingData: false });
   }
 
   render() {

@@ -36,7 +36,7 @@ class Login extends Component {
     }
     if (res.data.data.login) {
       localStorage.setItem('token', res.data.data.login.token);
-      this.setState({ msg: 'Loggedin Successfully!' });
+      this.setState({ msg: 'Loggedin Successfully!', errorMessage: '' });
     }
   }
 

@@ -12,12 +12,16 @@ export default props => {
       <Menu.Item><Link to='/'>Fluz</Link></Menu.Item>
       <Menu.Menu position="right">
         {(!token &&
-          <Modal trigger={<Menu.Item>Login</Menu.Item>}>
-            <Modal.Header>Login</Modal.Header>
-            <Modal.Content>
-              <Login />
-            </Modal.Content>
-          </Modal>) ||
+          <Menu>
+            <Menu.Item><Link to='/register'>Register</Link></Menu.Item>
+            <Modal trigger={<Menu.Item>Login</Menu.Item>}>
+              <Modal.Header>Login</Modal.Header>
+              <Modal.Content>
+                <Login />
+              </Modal.Content>
+            </Modal>
+          </Menu>
+        ) ||
           (<Menu>
             <Dropdown text='Menu' pointing item>
               <Dropdown.Menu>

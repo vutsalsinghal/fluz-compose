@@ -5,6 +5,7 @@ import Home from './components/Home';
 import CalorieIntake from './components/CalorieIntake';
 import CalorieSpent from './components/CalorieSpent';
 import Friends from './components/Friends';
+import Register from './components/Register';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
         <Layout>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/intake" component={CalorieIntake} />
             <Route exact path="/spent" component={CalorieSpent} />
             <Route exact path="/friends" component={Friends} />
