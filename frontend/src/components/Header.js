@@ -9,7 +9,7 @@ export default props => {
 
   return (
     <Menu style={{ marginTop: '0px', }} size={'large'}>
-      <Menu.Item><Link to='/'>Fluz</Link></Menu.Item>
+      <Menu.Item><Link to='/'>Calorie</Link></Menu.Item>
       <Menu.Menu position="right">
         {(!token &&
           <Menu>

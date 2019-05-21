@@ -26,7 +26,7 @@ class Home extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz";
+    document.title = "Calorie";
     await axios.get(`http://localhost:${process.env.REACT_APP_GRAPHQL_SERVER}/`)
 
     const token = localStorage.getItem('token');

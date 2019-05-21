@@ -30,7 +30,7 @@ class Friends extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz | Friends";
+    document.title = "Calorie | Friends";
 
     const token = localStorage.getItem('token');
     if (token) {

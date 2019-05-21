@@ -22,7 +22,7 @@ class Login extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz | Login";
+    document.title = "Calorie | Login";
     this.setState({ loadingData: false });
   }
 

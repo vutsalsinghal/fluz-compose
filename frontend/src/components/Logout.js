@@ -10,7 +10,7 @@ class Logout extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz | Logout";
+    document.title = "Calorie | Logout";
     this.setState({ loadingData: false });
   }
 

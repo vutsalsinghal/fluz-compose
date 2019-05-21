@@ -42,7 +42,7 @@ class CalorieSpent extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz";
+    document.title = "Calorie | Spent";
 
     //localStorage.setItem('token', '');
     const token = localStorage.getItem('token');

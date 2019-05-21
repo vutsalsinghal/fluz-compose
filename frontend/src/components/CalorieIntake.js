@@ -40,7 +40,7 @@ class AddCalorieIntake extends Component {
 
   async componentDidMount() {
     this.setState({ loadingData: true });
-    document.title = "Fluz";
+    document.title = "Calorie | Intake";
 
     const token = localStorage.getItem('token');
     console.log('token in react: ', token);

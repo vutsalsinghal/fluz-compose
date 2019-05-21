@@ -1,8 +1,13 @@
 # Fluz Docker Compose
 
+Local container orchestration of a full-stack webapp.
+
+- Uses node express with Postgres database and graphql server to serve APIs
+- React front-end
+
 ## Instructions
 - Make sure you've `Docker` and `Docker-compose` installed
-- Clone repo `$ git clone https://github.com/vutsalsinghal/fluz-compose.git .`
+- Clone repo `$ git clone https://github.com/vutsalsinghal/calorie-compose.git .`
 - Open terminal in the root dir and run `$ docker compose up`
 
 Now to run the app
