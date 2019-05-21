@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  pgadmin:
+  pdgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_container
     ports:
@@ -26,8 +26,8 @@ services:
     networks:
       - ntwrk
   web-backend:
-    build: ${DEV_BUILD_PATH}
-    image: fluz-dev
+    build: ${BACKEND_BUILD_PATH}
+    image: pyoey/calorie-backend
     container_name: backend_container
     depends_on:
       - pgdb
@@ -42,8 +42,8 @@ services:
     networks:
       - ntwrk
   web-frontend:
-    build: ${DEV_BUILD_PATH}
-    image: fluz-dev
+    build: ${FRONTEND_BUILD_PATH}
+    image: pyoey/calorie-frontend
     container_name: frontend_container
     depends_on:
       - web-backend
