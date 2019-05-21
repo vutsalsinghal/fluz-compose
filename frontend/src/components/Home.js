@@ -38,7 +38,6 @@ class Home extends Component {
           headers: { 'x-token': token }
         })
 
-      console.log(res.data)
       if (res.data.errors) {
         this.setState({ errorMessage: res.data.errors[0].message });
       }
@@ -101,10 +100,9 @@ class Home extends Component {
         <h1 style={{ "textAlign": "center" }}>Welcome!</h1>
         <br /><br />
 
-        {(this.state.token && this.renderRank()) ||
-
-          <div>Login!</div>
-        }
+        <h2>Statistics</h2><br />
+        {this.state.token && this.renderRank()}
+        {/*{this.state.errorMessage && <div style={{ color: '#cc0000' }}><br />Not Loggedin!</div>}*/}
 
         <br /><br />
       </div>
