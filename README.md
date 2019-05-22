@@ -12,6 +12,7 @@ Local container orchestration of a full-stack webapp.
 
 Now to run the app
 - Open terminal in root dir with `docker-compose.yml` present.
+- [IMP] Rename `.env.example` to `.env` (in root, frontend and backend dir) and set apt values.
 - Do `docker-compose up` to start the containers.
 - Wait till the containers are up and then navigate to `localhost:3000` on the browser to access the React front-end
 - User `user1` as username and password to login. 
