@@ -61,5 +61,5 @@ services:
 networks:
   ntwrk:
 
-#volumes:
+volumes:
   pgdata:
